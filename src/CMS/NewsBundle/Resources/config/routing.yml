@@ -1,0 +1,4 @@
+cms_news_annotation:
+    resource: "@NewsBundle/Controller"
+    prefix:   /
+    type: annotation

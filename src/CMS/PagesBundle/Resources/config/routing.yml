@@ -1,0 +1,4 @@
+cms_page_annotation:
+    resource: "@PagesBundle/Controller"
+    prefix:   /
+    type: annotation

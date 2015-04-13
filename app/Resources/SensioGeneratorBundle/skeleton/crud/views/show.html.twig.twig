@@ -1,0 +1,46 @@
+{% block extends %}
+{{ "{% extends '::cms/cms_template.html.twig' %}" }}
+{% endblock extends %}
+
+{% block body %}
+{{ "{% block crud_block %}" }}
+    <h1 class="title">
+        <i class="fa fa-tag"></i>
+        {{ entity }} ""
+        <a class="btn btn-primary" href="{{ "{{ path('" ~ route_name_prefix ~ "_new') }}" }}"> Adicionar novo </a>
+    </h1>
+
+    <section class="panel">
+        <div class="panel-body">
+            <div class="position-left">
+                <table class="table table-striped">
+                    <tbody>
+                        {%- for field, metadata in fields %}
+
+                            <tr>
+                                <th class="col-sm-2">{{ field|capitalize }}</th>
+
+                            {%- if metadata.type in ['date', 'datetime'] %}
+
+                                <td class="col-sm-10">{{ '{{ entity.' ~ field|replace({'_': ''}) ~ '|date(\'Y-m-d H:i:s\') }}' }}</td>
+
+                            {%- else %}
+
+                                <td class="col-sm-10">{{ '{{ entity.' ~ field|replace({'_': ''}) ~ ' }}' }}</td>
+
+                            {%- endif %}
+
+                            </tr>
+
+                        {%- endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    {% set hide_edit, hide_add, hide_delete = false, false, false %}
+    {% include 'crud/views/others/record_actions.html.twig.twig' %}
+{{ "{% endblock %}" }}
+{% endblock body %}

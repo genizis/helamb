@@ -1,0 +1,4 @@
+cms_client_annotation:
+    resource: "@UserBundle/Controller"
+    prefix:   /
+    type: annotation

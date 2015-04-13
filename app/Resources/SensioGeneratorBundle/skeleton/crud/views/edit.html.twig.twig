@@ -1,0 +1,24 @@
+{% block extends %}
+{{ "{% extends '::cms/cms_template.html.twig' %}" }}
+{% endblock extends %}
+
+{% block body %}
+{{ "{% block crud_block %}" }}
+	<h1 class="title">
+        <i class="fa fa-tag"></i>
+        Editando {{ entity }} ""
+        <a class="btn btn-primary" href="{{ "{{ path('" ~ route_name_prefix ~ "_new') }}" }}"> Adicionar novo </a>
+    </h1>
+
+    <section class="panel">
+	    <div class="panel-body">
+	        <div class="position-left">
+	            {{ '{{ form(edit_form) }}' }}
+	        </div>
+	    </div>
+	</section>
+
+    {% set hide_edit, hide_add, hide_delete = true, false, false %}
+    {% include 'crud/views/others/record_actions.html.twig.twig' %}
+{{ "{% endblock %}" }}
+{% endblock body %}

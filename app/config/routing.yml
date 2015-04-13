@@ -1,0 +1,28 @@
+news:
+    resource: "@NewsBundle/Resources/config/routing.yml"
+    prefix:   /
+
+pages:
+    resource: "@PagesBundle/Resources/config/routing.yml"
+    prefix:   /
+
+dashboard:
+    resource: "@DashboardBundle/Resources/config/routing.yml"
+    prefix:   /
+
+base:
+    resource: "@BaseBundle/Resources/config/routing.yml"
+    prefix:   /
+
+cms_login:
+    resource: "@UserBundle/Controller"
+    prefix:   /
+    type: annotation
+
+user:
+    resource: "@UserBundle/Resources/config/routing.yml"
+    prefix:   /
+
+site:
+    resource: "@SiteBundle/Resources/config/routing.yml"
+    prefix:   /

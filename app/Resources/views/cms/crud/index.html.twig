@@ -1,0 +1,86 @@
+{% extends '::cms/cms_template.html.twig' %}
+
+{% block crud_block %}
+
+<div class="row">
+    <div class="col-sm-12">
+        <h1 class="title">
+            <i class="fa {{ configs.icon }}"></i>
+            Listando {{ configs.plural_name }}
+            <a class="btn btn-primary" href="{{ path(configs.prefix_route ~ '_new') }}"> Adicionar novo </a>
+        </h1>
+        <section class="panel">
+            <div class="panel-body">
+            <div class="adv-table">
+            <form action="{{ path(configs.prefix_route ~ '_delete_all') }}" id="listform" method="post">
+                <table  class="display table table-bordered table-striped" id="dynamic-table">
+                    <thead>
+                        <tr>
+                            <th class="sorting_disabled" style="text-align: center;"><input type="checkbox" class="check-all"></th>
+                            <th class="col-sm-1">Id</th>
+                            {% for field, value in configs.list_fields  %}
+                                {% if value.type is defined %}
+                                    <th class="{{ value.class }}">{{ value.label }}</th>
+                                {% else %}
+                                    <th class="col-sm-4">{{ value }}</th>
+                                {% endif %}
+                            {% endfor %}
+                            <th class="col-sm-2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for entity in entities %}
+                        <tr>
+                            <td style="text-align: center;"><input type="checkbox" class="record-check" name="records[]" value="{{ entity.id }}"></td>
+                            <td><a href="{{ path(configs.prefix_route ~ '_edit', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+
+                            {% for field, value in configs.list_fields  %}
+                                {% if value.type is defined %}
+                                    {% if value.type == 'date'  %}
+                                        <td>{{ attribute(entity, field) | date('d/m/Y') }}</td>
+                                    {% elseif value.type == 'boolean' %}
+                                        <td style="text-align: center"><i class="fa {{ attribute(entity, field) ? "fa-check-circle" : "fa-times-circle" }}"></i></td>
+                                    {% else %}
+                                        <td>{{ attribute(entity, field) }}</td>
+                                    {% endif %}
+                                {% else %}
+                                    <td>{{ attribute(entity, field) }}</td>
+                                {% endif %}
+                            {% endfor %}
+
+                            <td>
+                                <a href="{{ path(configs.prefix_route ~ '_show', { 'id': entity.id }) }}" class="btn btn-white">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+
+                                <a href="{{ path(configs.prefix_route ~ '_edit', { 'id': entity.id }) }}" class="btn btn-white">
+                                    <i class="fa fa-pencil-square"></i>
+                                </a>
+
+                                <a href="{{ path(configs.prefix_route ~ '_delete', { 'id': entity.id }) }}" class="btn btn-white delete">
+                                    <i class="fa fa-trash-o"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+            </div>
+            </div>
+        </section>
+    </div>
+</div>
+<ul class="record_actions">
+    <li>
+        <a class="btn btn-primary" href="{{ path(configs.prefix_route ~ '_new') }}">
+            Adicionar novo
+        </a>
+    </li>
+    <li>
+        <a class="btn btn-danger delete-all" href="#">
+            Excluir registros selecionados
+        </a>
+    </li>
+</ul>
+{% endblock %}

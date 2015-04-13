@@ -1,0 +1,22 @@
+{% extends '::cms/cms_template.html.twig' %}
+
+{% block crud_block %}
+	<h1 class="title">
+        <i class="fa {{ configs.icon }}"></i>
+        Adicionar {{ configs.singular_name }}
+    </h1>
+	<section class="panel">
+	    <div class="panel-body">
+	        <div class="position-left">
+	            {{ form(form, {'attr': {'id': 'cadForm'}}) }}
+	        </div>
+	    </div>
+	</section>
+	<ul class="record_actions">
+	    <li>
+	        <a class="btn btn-default" href="{{ path(configs.prefix_route) }}">
+	            Voltar para a lista
+	        </a>
+	    </li>
+	</ul>
+{% endblock %}

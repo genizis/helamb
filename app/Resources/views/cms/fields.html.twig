@@ -1,0 +1,177 @@
+{% form_theme form _self %}
+
+{% block date_widget %}
+    {% spaceless %}
+        {% if form.vars.value %}
+            {% set dataAtual = form.vars.value|date('d-m-Y') %}
+        {% else %}
+            {% set dataAtual = "now"|date('d-m-Y') %}
+        {% endif %}
+        <div class="form-group">
+            {{ form_errors(form) }}
+            <div class="input-group">
+                <div data-date-format="dd-mm-yyyy" data-date="{{ dataAtual }}" class="input-append date dpYears" id="{{ form.vars.name}}">
+                    <input type="text" {{ form.vars.required ? 'required="required"' : '' }} name="{{ form.vars.full_name}}" readonly="" value="{{ dataAtual }}" size="16" class="form-control date_{{ form.vars.name}}">
+                    <span class="input-group-btn add-on">
+                        <button class="btn btn-primary" style="padding: 8px 15px;" type="button"><i class="fa fa-calendar"></i></button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            jQuery(document).ready(function(){
+                jQuery('#{{ form.vars.name}}').datepicker({
+                    autoclose: true
+                });
+            });
+        </script>
+    {% endspaceless %}
+
+{% endblock date_widget %}
+
+
+{% block file_widget %}
+    {% spaceless %}
+
+        {% set type = type|default('file') %}
+        <div class="fileupload fileupload-new" data-provides="fileupload">
+            <span class="btn btn-white btn-file">
+                <span class="fileupload-new"><i class="fa fa-paper-clip"></i> Selecionar arquivo</span>
+                <span class="fileupload-exists"><i class="fa fa-undo"></i> Alterar</span>
+                <input type="{{ type }}" {{ block('widget_attributes') }}>
+            </span>
+            <span class="fileupload-preview" style="margin-left:5px;"></span>
+        </div>
+
+        {% if type == 'file' and form.vars.data != '' %}
+
+            {% set entity = form.vars.id|split('_') %}
+            <div>
+                <img height="34" src="{{ asset('uploads/' ~ entity[2] ~ '/' ~ form.vars.data) }}" /><br/>
+            </div>
+        {% endif %}
+
+    {% endspaceless %}
+{% endblock file_widget %}
+
+{% block gallery_widget %}
+    {% spaceless %}
+        {% set destiny_path = (form.vars.attr is defined and form.vars.attr.destiny_path is defined)?form.vars.attr.destiny_path|replace("/","-") :"" %}
+
+        <div id="{{ form.vars.id }}_list" class="uploads">
+            {% for key, value in form.vars.value %}
+                <div class="{{ form.vars.id }}_box uploads_upload" data-input="{{ form.vars.id }}_{{key}}"><div class="apagar"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></div><div class="thumb-img"><img src="{{ asset(value) }}"></div></div>
+            {% endfor %}
+            <div class="clearfix"></div>
+        </div>
+        <br/>
+        <div id="{{ form.vars.id }}_container">
+            <button type="button" id="{{ form.vars.id }}_pickup" class="btn multiple"> Adicionar imagens</button>
+        </div>
+        <br/>
+        <div id="{{ form.vars.id }}_inputs">
+            {% for key, value in form.vars.value %}
+                <input type="hidden" id="{{ form.vars.id }}_{{key}}" name="{{ form.vars.full_name}}[{{key}}]" required="required" value="{{ value }}">
+            {% endfor %}
+        </div>
+        <script type="text/javascript">
+
+            var {{ form.vars.id }}_count = {{ form.vars.value|length }};
+            var {{ form.vars.id }}_uploader = new plupload.Uploader({
+                runtimes : 'html5,flash,silverlight,html4',
+                browse_button : '{{ form.vars.id }}_pickup', // you can pass in id...
+                container: document.getElementById('{{ form.vars.id }}_container'), // ... or DOM Element itself
+                url : "{{ path('cms_gallery_upload', { destiny:  destiny_path }) }}",
+                flash_swf_url : "{{ asset('cms/js/plupload/js/Moxie.swf') }}",
+                silverlight_xap_url : "{{ asset('cms/js/plupload/js/Moxie.xap') }}",
+
+                filters : {
+                    max_file_size : '10mb',
+                    mime_types: [
+                        {title : "Image files", extensions : "jpg,gif,png"}
+                    ]
+                },
+
+                init: {
+                    PostInit: function() {
+                        {{ form.vars.id }}_action_remove();
+                        //document.getElementById('{{ form.vars.id }}_list').innerHTML = '';
+                    },
+
+                    FilesAdded: function(up, files) {
+                        plupload.each(files, function(file) {
+                            var preloader = new mOxie.Image();
+
+                            var newfield = '<div class="{{ form.vars.id }}_box uploads_upload just-sended" id="' + file.id + '"><div class="apagar"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></div><div class="thumb-img"><img></div><span class="filesize">' + plupload.formatSize(file.size) + '</span></div>';
+
+                            $('#{{ form.vars.id }}_list').prepend(newfield);
+
+                            preloader.onload = function() {
+                                preloader.downsize( 150, 150 );
+                                $('#' + file.id + ' img').attr('src', preloader.getAsDataURL());
+                            };
+
+                            preloader.load( file.getSource() );
+                        });
+
+                        {{ form.vars.id }}_action_remove();
+                    },
+
+                    FileUploaded: function(up, file, info) {
+                        var image = info.response;
+
+                        var id = "{{ form.vars.id }}_" + {{ form.vars.id }}_count;
+                        var name = "{{ form.vars.full_name}}[" + {{ form.vars.id }}_count + "]";
+
+                        $("#{{ form.vars.id }}_inputs").append('<input type="hidden" id="' + id + '" name="' + name + '" required="required" value="' + image +'">');
+                        {{ form.vars.id }}_count++;
+                    },
+
+                    UploadProgress: function(up, file) {
+                        $("#" + file.id).children('b').html('<span>' + file.percent + "%</span>");
+                    },
+                    UploadComplete: function(){
+                        $('form#cadForm').submit();
+                    },
+
+                    Error: function(up, err) {
+                        console.log("\nError #" + err.code + ": " + err.message);
+                    }
+                }
+            });
+
+            jQuery(document).ready(function($) {
+                $('form#cadForm').submit(function(){
+                    console.log({{ form.vars.id }}_uploader.total.queued);
+                    if({{ form.vars.id }}_uploader.total.queued > 0){
+                        {{ form.vars.id }}_uploader.start();
+                        return false;
+                    }
+                    return false;
+                });
+            });
+
+            {{ form.vars.id }}_uploader.init();
+
+            function {{ form.vars.id }}_action_remove() {
+                $(".{{ form.vars.id }}_box .apagar").click(function() {
+                    var file_input = $(this).parent().data('input');
+                    $(this).parent().remove();
+                    $("#" + file_input).remove();
+                    console.log('remove');
+                });
+            }
+        </script>
+    {% endspaceless %}
+{% endblock %}
+
+{% block form_row %}
+    {% spaceless %}
+
+        <div class="form-group">
+            {{ form_label(form) }}
+            {{ form_errors(form) }}
+            {{ form_widget(form) }}
+        </div>
+    {% endspaceless %}
+{% endblock form_row %}

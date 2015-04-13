@@ -1,0 +1,37 @@
+        protected $configs = array(
+            'prefix_route' => '{{ route_name_prefix }}',
+            'icon' => 'fa-tag',
+            'singular_name' => '{{ entity }}',
+            'plural_name' => '{{ entity }}',
+            'entity' => '{{ bundle }}:{{ entity }}',
+            'entity_class' => 'CMS\{{ bundle }}\Entity\{{ entity }}',
+            'entity_form' => 'CMS\{{ bundle }}\Form\{{ entity }}Type',
+            'title_field' => 'title',
+            'list_fields' => array(),
+            'show_fields' => array()
+        );
+
+    /**
+{% block phpdoc_method_header %}
+     * Lists all {{ entity }} entities.
+{% endblock phpdoc_method_header %}
+     *
+{% block phpdoc_method_annotations %}
+{% if 'annotation' == format %}
+     * @Route("/", name="{{ route_name_prefix }}")
+     * @Method("GET")
+     * @Template("::cms/crud/index.html.twig")
+{% endif %}
+{% endblock phpdoc_method_annotations %}
+     */
+{% block method_definition %}
+    public function indexAction()
+{% endblock method_definition %}
+    {
+{% block method_body %}
+
+        return parent::indexAction();
+
+{% endblock method_body %}
+
+    }

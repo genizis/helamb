@@ -1,0 +1,6 @@
+parameters:
+  tools.class: CMS\BaseBundle\Services\Tools
+
+services:
+  tools:
+    class: "%tools.class%"

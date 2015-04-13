@@ -1,0 +1,28 @@
+<ul class="record_actions">
+    <li>
+        <a class="btn btn-default" href="{{ "{{ path('" ~ route_name_prefix ~ "') }}" }}">
+            Voltar para a lista
+        </a>
+    </li>
+{% if ('show' in actions) and (not hide_add) %}
+    <li>
+        <a class="btn btn-primary" href="{{ "{{ path('" ~ route_name_prefix ~ "_new') }}" }}">
+            Adicionar novo
+        </a>
+    </li>
+{% endif %}
+{% if ('edit' in actions) and (not hide_edit) %}
+    <li>
+        <a class="btn btn-info" href="{{ "{{ path('" ~ route_name_prefix ~ "_edit', { 'id': entity."~ identifier ~" }) }}" }}">
+            Editar
+        </a>
+    </li>
+{% endif %}
+{% if ('delete' in actions) and (not hide_delete) %}
+    <li>
+        <a class="btn btn-danger delete" href="{{ "{{ path('" ~ route_name_prefix ~ "_delete', { 'id': entity."~ identifier ~" }) }}" }}">
+            Excluir
+        </a>
+    </li>
+{% endif %}
+</ul>

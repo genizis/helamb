@@ -1,0 +1,4 @@
+cms_gallery_annotation:
+    resource: "@BaseBundle/Controller"
+    prefix:   /
+    type: annotation

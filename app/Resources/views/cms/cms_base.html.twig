@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="ie lt-ie9 lt-ie8 lt-ie7 sidebar sidebar-collapse"> <![endif]-->
+<!--[if IE 7]>    <html class="ie lt-ie9 lt-ie8 sidebar sidebar-collapse"> <![endif]-->
+<!--[if IE 8]>    <html class="ie lt-ie9 sidebar sidebar-collapse"> <![endif]-->
+<!--[if gt IE 8]> <html class="ie sidebar sidebar-collapse"> <![endif]-->
+<!--[if !IE]><!-->
+<html class="{% block htmlbody %}{% endblock %}" lang="en">
+<head>
+    
+    {% block head %}
+      <meta charset="utf-8">
+
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="description" content="">
+      <meta name="author" content="ThemeBucket">
+      <link rel="shortcut icon" href="images/favicon.png">
+
+      <title>{% block title %}{% endblock %}Administração de Conteúdo</title>
+      
+      {% block stylesheets %}{% endblock %}
+
+      {% block headers_javascripts %}{% endblock %}
+
+    {% endblock %}
+</head>
+
+  <body class="{% block classbody %}{% endblock %}">
+
+      {% block body %}{% endblock %}
+
+    {% block footer_javascripts %}{% endblock %}
+
+  </body>
+</html>

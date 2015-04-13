@@ -1,0 +1,78 @@
+{% extends '::cms/cms_template.html.twig' %}
+
+{% block crud_block %}
+    <h1 class="title">
+        <i class="fa fa-tag"></i>
+        Listando News 
+        <a class="btn btn-primary" href="{{ path('cms_news_new') }}"> Adicionar novo </a>
+    </h1>
+
+    <section class="panel">
+            <div class="panel-body">
+            <div class="adv-table">
+            <form action="{{ path('cms_news_delete_all') }}" id="listform" method="post">
+                <table  class="display table table-bordered table-striped" id="dynamic-table">
+                    <thead>
+                        <tr>
+                            <th class="sorting_disabled" style="text-align: center;"><input type="checkbox" class="check-all"></th>
+                                <th>Id</th>
+                                <th>Title</th>
+                                <th>Slug</th>
+                                <th>Description</th>
+                                <th>Resumo</th>
+                                <th>Publishat</th>
+                                <th>Createdat</th>
+                                <th>Updatedat</th>
+                                <th>Isactive</th>
+                                <th>Image</th>
+                            <th class="col-sm-2">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entity in entities %}
+                            <tr>
+                                <td style="text-align: center;"><input type="checkbox" class="record-check" name="records[]" value="{{ entity.id }}"></td>
+                                <td><a href="{{ path('cms_news_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                                <td>{{ entity.title }}</td>
+                                <td>{{ entity.slug }}</td>
+                                <td>{{ entity.description }}</td>
+                                <td>{{ entity.resumo }}</td>
+                                <td>{% if entity.publishAt %}{{ entity.publishAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                                <td>{% if entity.createdAt %}{{ entity.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                                <td>{% if entity.updatedAt %}{{ entity.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                                <td>{{ entity.isActive }}</td>
+                                <td>{{ entity.image }}</td>
+                                <td><a href="{{ path('cms_news_show', { 'id': entity.id }) }}" class="btn btn-white">
+    <i class="fa fa-eye"></i>
+</a>
+
+<a href="{{ path('cms_news_edit', { 'id': entity.id }) }}" class="btn btn-white">
+    <i class="fa fa-pencil-square"></i>
+</a>
+
+<a href="{{ path('cms_news_delete', { 'id': entity.id }) }}" class="btn btn-white delete">
+    <i class="fa fa-trash-o"></i>
+</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+            </div>
+            </div>
+        </section>
+
+        <ul class="record_actions">
+        <li>
+            <a class="btn btn-primary" href="{{ path('cms_news_new') }}">
+                Adicionar novo
+            </a>
+        </li>
+        <li>
+            <a class="btn btn-danger delete-all" href="#">
+                Excluir registros selecionados
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

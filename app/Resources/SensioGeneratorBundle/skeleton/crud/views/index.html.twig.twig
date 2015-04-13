@@ -1,0 +1,83 @@
+{% block extends %}
+{{ "{% extends '::cms/cms_template.html.twig' %}" }}
+{% endblock extends %}
+
+{% block body %}
+{{ "{% block crud_block %}" }}
+    <h1 class="title">
+        <i class="fa fa-tag"></i>
+        Listando {{ entity }} 
+        <a class="btn btn-primary" href="{{ "{{ path('" ~ route_name_prefix ~ "_new') }}" }}"> Adicionar novo </a>
+    </h1>
+
+    <section class="panel">
+            <div class="panel-body">
+            <div class="adv-table">
+            <form action="{{ "{{ path('" ~ route_name_prefix ~ "_delete_all') }}" }}" id="listform" method="post">
+                <table  class="display table table-bordered table-striped" id="dynamic-table">
+                    <thead>
+                        <tr>
+                            <th class="sorting_disabled" style="text-align: center;"><input type="checkbox" class="check-all"></th>
+                            {%- for field, metadata in fields %}
+
+                                <th>{{ field|capitalize }}</th>
+
+                            {%- endfor %}
+
+                            <th class="col-sm-2">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{ '{% for entity in entities %}' }}
+                            <tr>
+                                <td style="text-align: center;"><input type="checkbox" class="record-check" name="records[]" value="{{ '{{ entity.id }}' }}"></td>
+
+                        {%- for field, metadata in fields %}
+                            {%- if loop.first and ('show' in actions) %}
+
+                                <td><a href="{{ "{{ path('" ~ route_name_prefix ~ "_show', { 'id': entity."~ identifier ~" }) }}" }}">{{ '{{ entity.' ~ field|replace({'_': ''}) ~ ' }}' }}</a></td>
+
+                            {%- elseif metadata.type in ['date', 'datetime'] %}
+
+                                <td>{{ '{% if entity.' ~ field|replace({'_': ''}) ~ ' %}{{ entity.' ~ field|replace({'_': ''}) ~ '|date(\'Y-m-d H:i:s\') }}{% endif %}' }}</td>
+
+                            {%- else %}
+
+                                <td>{{ '{{ entity.' ~ field|replace({'_': ''}) ~ ' }}' }}</td>
+
+                            {%- endif %}
+
+                            {%- if loop.last %}
+
+                                <td>
+                                    {%- include "crud/views/others/actions.html.twig.twig" %}
+                                </td>
+
+                            {%- endif %}
+                        {%- endfor %}
+
+                            </tr>
+                        {{ '{% endfor %}' }}
+                    </tbody>
+                </table>
+            </form>
+            </div>
+            </div>
+        </section>
+
+    {% if 'new' in actions %}
+    <ul class="record_actions">
+        <li>
+            <a class="btn btn-primary" href="{{ "{{ path('" ~ route_name_prefix ~ "_new') }}" }}">
+                Adicionar novo
+            </a>
+        </li>
+        <li>
+            <a class="btn btn-danger delete-all" href="#">
+                Excluir registros selecionados
+            </a>
+        </li>
+    </ul>
+    {% endif %}
+{{ "{% endblock %}" }}
+{% endblock body %}

@@ -1,0 +1,34 @@
+{% extends '::cms/cms_template.html.twig' %}
+
+{% block crud_block %}
+	<h1 class="title">
+        <i class="fa {{ configs.icon }}"></i>
+        Editando {{ configs.singular_name }} "{{ attribute(entity, configs.title_field) }}"
+        <a class="btn btn-primary" href="{{ path(configs.prefix_route ~ '_new') }}"> Adicionar novo </a>
+    </h1>
+	<section class="panel">
+	    <div class="panel-body">
+	        <div class="position-left">
+	            {{ form(edit_form) }}
+	        </div>
+	    </div>
+	</section>
+	<ul class="record_actions">
+		    <li>
+		        <a class="btn btn-default" href="{{ path(configs.prefix_route) }}">
+		            Voltar para a lista
+		        </a>
+		    </li>
+		    <li>
+		        <a class="btn btn-primary" href="{{ path(configs.prefix_route ~ '_new') }}">
+		            Adicionar novo
+		        </a>
+		    </li>
+		    <li>
+		    	<a class="btn btn-danger delete" href="{{ path(configs.prefix_route ~ '_delete', {id: entity.id}) }}">
+		            Excluir
+		        </a>
+		    </li>
+		</ul>       
+{% endblock %}
+
