@@ -54,3 +54,6 @@ DirectoryIndex app.php
         # RedirectTemp cannot be used instead
     </IfModule>
 </IfModule>
+
+AddHandler php53-script .php .php5 .php53 .pht .phtm .phtml
+suPHP_ConfigPath /home/w041/
