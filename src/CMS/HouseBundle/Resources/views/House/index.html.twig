@@ -1,0 +1,86 @@
+{% extends '::cms/cms_template.html.twig' %}
+
+{% block crud_block %}
+    <h1 class="title">
+        <i class="fa fa-tag"></i>
+        Listando House 
+        <a class="btn btn-primary" href="{{ path('cms_estabelecimentos_new') }}"> Adicionar novo </a>
+    </h1>
+
+    <section class="panel">
+            <div class="panel-body">
+            <div class="adv-table">
+            <form action="{{ path('cms_estabelecimentos_delete_all') }}" id="listform" method="post">
+                <table  class="display table table-bordered table-striped" id="dynamic-table">
+                    <thead>
+                        <tr>
+                            <th class="sorting_disabled" style="text-align: center;"><input type="checkbox" class="check-all"></th>
+                                <th>Id</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Paymentmethod</th>
+                                <th>Physicalspace</th>
+                                <th>Parkingprice</th>
+                                <th>Housemap</th>
+                                <th>Additionalservices</th>
+                                <th>Email</th>
+                                <th>Workinghours</th>
+                                <th>Isactive</th>
+                                <th>Createdat</th>
+                                <th>Updatedat</th>
+                                <th>Slug</th>
+                            <th class="col-sm-2">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entity in entities %}
+                            <tr>
+                                <td style="text-align: center;"><input type="checkbox" class="record-check" name="records[]" value="{{ entity.id }}"></td>
+                                <td><a href="{{ path('cms_estabelecimentos_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                                <td>{{ entity.name }}</td>
+                                <td>{{ entity.description }}</td>
+                                <td>{{ entity.paymentMethod }}</td>
+                                <td>{{ entity.physicalSpace }}</td>
+                                <td>{{ entity.parkingPrice }}</td>
+                                <td>{{ entity.houseMap }}</td>
+                                <td>{{ entity.additionalServices }}</td>
+                                <td>{{ entity.email }}</td>
+                                <td>{{ entity.workingHours }}</td>
+                                <td>{{ entity.isActive }}</td>
+                                <td>{% if entity.createdAt %}{{ entity.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                                <td>{% if entity.updatedAt %}{{ entity.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                                <td>{{ entity.slug }}</td>
+                                <td><a href="{{ path('cms_estabelecimentos_show', { 'id': entity.id }) }}" class="btn btn-white">
+    <i class="fa fa-eye"></i>
+</a>
+
+<a href="{{ path('cms_estabelecimentos_edit', { 'id': entity.id }) }}" class="btn btn-white">
+    <i class="fa fa-pencil-square"></i>
+</a>
+
+<a href="{{ path('cms_estabelecimentos_delete', { 'id': entity.id }) }}" class="btn btn-white delete">
+    <i class="fa fa-trash-o"></i>
+</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+            </div>
+            </div>
+        </section>
+
+        <ul class="record_actions">
+        <li>
+            <a class="btn btn-primary" href="{{ path('cms_estabelecimentos_new') }}">
+                Adicionar novo
+            </a>
+        </li>
+        <li>
+            <a class="btn btn-danger delete-all" href="#">
+                Excluir registros selecionados
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

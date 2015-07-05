@@ -18,7 +18,7 @@ security:
                 login_path: /cms/login
             logout:
                 path:   /cms/logout
-                target: /cms/login
+                target: /cms/loginxx
             anonymous: ~
 
     access_control:

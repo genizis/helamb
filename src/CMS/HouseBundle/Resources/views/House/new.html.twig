@@ -1,0 +1,24 @@
+{% extends '::cms/cms_template.html.twig' %}
+
+{% block crud_block %}
+    <h1 class="title">
+        <i class="fa fa-tag"></i>
+        Adicionar House
+    </h1>
+
+    <section class="panel">
+	    <div class="panel-body">
+	        <div class="position-left">
+	            {{ form(form) }}
+	        </div>
+	    </div>
+	</section>
+
+        <ul class="record_actions">
+    <li>
+        <a class="btn btn-default" href="{{ path('cms_estabelecimentos') }}">
+            Voltar para a lista
+        </a>
+    </li>
+</ul>
+{% endblock %}

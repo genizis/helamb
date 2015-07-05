@@ -22,6 +22,11 @@ class AppKernel extends Kernel
             new CMS\PagesBundle\PagesBundle(),
             new CMS\BaseBundle\BaseBundle(),
             new CMS\NewsBundle\NewsBundle(),
+            new CMS\CityBundle\CMSCityBundle(),
+            new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
+            new CMS\GeneralEntriesBundle\CMSGeneralEntriesBundle(),
+            new CMS\HouseBundle\CMSHouseBundle(),
+            new CMS\ArtistBundle\CMSArtistBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

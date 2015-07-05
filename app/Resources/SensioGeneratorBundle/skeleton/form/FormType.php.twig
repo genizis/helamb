@@ -23,7 +23,12 @@ class {{ form_class }} extends AbstractType
         $builder
         {%- for field in fields %}
 
-            ->add('{{ field }}', 'text', array( 'label' => '{{ field }}', 'attr' => array('class' => 'form-control', 'placeholder' => '{{ field }}')))
+            ->add(
+                '{{ field }}',
+                'text',
+                array('label' => '{{ field }}',
+                      'attr' => array()
+            ))
         {%- endfor %}
 
         ;

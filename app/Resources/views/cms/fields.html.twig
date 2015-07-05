@@ -47,7 +47,7 @@
 
             {% set entity = form.vars.id|split('_') %}
             <div>
-                <img height="34" src="{{ asset('uploads/' ~ entity[2] ~ '/' ~ form.vars.data) }}" /><br/>
+                <img width="150" src="{{ asset('uploads/' ~ entity[2] ~ '/' ~ form.vars.data) }}" /><br/>
             </div>
         {% endif %}
 
@@ -175,3 +175,72 @@
         </div>
     {% endspaceless %}
 {% endblock form_row %}
+
+
+{% block collection_widget %}
+    {{ form_widget(form, { 'attr': {'data-prototype': form_row(form.vars.prototype) }}) }}
+    '<button type="button" id="{{ form.vars.id }}_init" onclick="addRow_{{ form.vars.id }}();" class="btn btn-primary">Adicionar</button>
+    <script type="text/javascript">
+        var stringButtonAdd = '<button style="margin-left: 10px; display: none;" type="button" onclick="addRow_{{ form.vars.id }}();" class="{{ form.vars.id }}_btn add btn btn-info"><span class="glyphicon glyphicon-plus"></span></button>';
+        var {{ form.vars.id }}_count = '{{ form|length }}';
+        jQuery(document).ready(function() {
+            jQuery('#{{ form.vars.id }}').children('.form-group').each(function () {
+                var $newLi = jQuery('<div class="collection multiple col-sm-12"></div>');
+                $(this).parent().append($newLi);
+                $newLi.prepend($(this));
+
+                {{ form.vars.id }}_delete_form($newLi);
+            });
+
+            jQuery('div[id*=_phone]').addClass('phone-form');
+
+            jQuery('.{{ form.vars.id }}_btn.add:last').show();
+
+            if(jQuery('.{{ form.vars.id }}_btn').length > 0) {
+                jQuery('#{{ form.vars.id }}_init').hide();
+            }
+        });
+
+        function addRow_{{ form.vars.id }}() {
+            var list = jQuery('#{{ form.vars.id }}');
+
+            // grab the prototype template
+            var newWidget = list.attr('data-prototype');
+            newWidget = newWidget.replace(/__name__/g, {{ form.vars.id }}_count);
+            {{ form.vars.id }}_count++;
+
+            // create a new list element and add it to the list
+            var newLi = jQuery('<div class="collection multiple col-sm-12"></div>').html(newWidget);
+            newLi.appendTo(list);
+
+            list.children().each(function() {
+                {{ form.vars.id }}_delete_form($(this));
+            });
+
+            jQuery('.{{ form.vars.id }}_btn.add').hide();
+            jQuery('.{{ form.vars.id }}_btn.add:last').show();
+            jQuery('#{{ form.vars.id }}_init').hide();
+        }
+
+
+        function {{ form.vars.id }}_delete_form($subform) {
+            var $removeForm = $('<button type="button" class="{{ form.vars.id }}_btn btn btn-danger collection delete"><span class="glyphicon glyphicon-minus"></span></button>');
+            $subform.find(".collection.delete").remove();
+            $subform.append($removeForm);
+
+            var $addForm = $(stringButtonAdd);
+            $subform.append($addForm);
+
+            $removeForm.on('click', function(e) {
+                e.preventDefault();
+                $subform.remove();
+                jQuery('.{{ form.vars.id }}_btn.add:last').show();
+
+                if(jQuery('.{{ form.vars.id }}_btn').length == 0) {
+                    jQuery('#{{ form.vars.id }}_init').show();
+                }
+            });
+        }
+
+    </script>
+{% endblock collection_widget %}

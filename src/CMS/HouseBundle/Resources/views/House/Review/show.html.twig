@@ -1,0 +1,71 @@
+{% extends '::cms/cms_template.html.twig' %}
+
+{% block crud_block %}
+    <h1 class="title">
+        <i class="fa fa-tag"></i>
+        House\Review ""
+        <a class="btn btn-primary" href="{{ path('cms_estabelecimentos_avaliacoes_new') }}"> Adicionar novo </a>
+    </h1>
+
+    <section class="panel">
+        <div class="panel-body">
+            <div class="position-left">
+                <table class="table table-striped">
+                    <tbody>
+                            <tr>
+                                <th class="col-sm-2">Id</th>
+                                <td class="col-sm-10">{{ entity.id }}</td>
+                            </tr>
+                            <tr>
+                                <th class="col-sm-2">Personname</th>
+                                <td class="col-sm-10">{{ entity.personName }}</td>
+                            </tr>
+                            <tr>
+                                <th class="col-sm-2">Personemail</th>
+                                <td class="col-sm-10">{{ entity.personEmail }}</td>
+                            </tr>
+                            <tr>
+                                <th class="col-sm-2">Score</th>
+                                <td class="col-sm-10">{{ entity.score }}</td>
+                            </tr>
+                            <tr>
+                                <th class="col-sm-2">Comment</th>
+                                <td class="col-sm-10">{{ entity.comment }}</td>
+                            </tr>
+                            <tr>
+                                <th class="col-sm-2">Createdat</th>
+                                <td class="col-sm-10">{{ entity.createdAt|date('Y-m-d H:i:s') }}</td>
+                            </tr>
+                            <tr>
+                                <th class="col-sm-2">Isapproved</th>
+                                <td class="col-sm-10">{{ entity.isApproved }}</td>
+                            </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+        <ul class="record_actions">
+    <li>
+        <a class="btn btn-default" href="{{ path('cms_estabelecimentos_avaliacoes') }}">
+            Voltar para a lista
+        </a>
+    </li>
+    <li>
+        <a class="btn btn-primary" href="{{ path('cms_estabelecimentos_avaliacoes_new') }}">
+            Adicionar novo
+        </a>
+    </li>
+    <li>
+        <a class="btn btn-info" href="{{ path('cms_estabelecimentos_avaliacoes_edit', { 'id': entity.id }) }}">
+            Editar
+        </a>
+    </li>
+    <li>
+        <a class="btn btn-danger delete" href="{{ path('cms_estabelecimentos_avaliacoes_delete', { 'id': entity.id }) }}">
+            Excluir
+        </a>
+    </li>
+</ul>
+{% endblock %}

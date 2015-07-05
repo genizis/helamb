@@ -1,3 +1,23 @@
+cms_artist:
+    resource: "@CMSArtistBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+cms_house:
+    resource: "@CMSHouseBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+cms_general_entries:
+    resource: "@CMSGeneralEntriesBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+cms_city:
+    resource: "@CMSCityBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 news:
     resource: "@NewsBundle/Resources/config/routing.yml"
     prefix:   /

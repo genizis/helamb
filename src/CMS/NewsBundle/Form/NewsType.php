@@ -17,7 +17,7 @@ class NewsType extends AbstractType
     {
         $builder
             ->add('title', 'text', array( 'label' => 'title', 'attr' => array('class' => 'form-control', 'placeholder' => 'title')))
-	        ->add('description', 'textarea', array( 'label' => 'description', 'required' => false, 'attr' => array('class' => 'form-control summernote', 'placeholder' => 'description')))
+	        ->add('description', 'textarea', array( 'label' => 'description', 'required' => false, 'attr' => array('class' => 'form-control', 'placeholder' => 'description')))
 	        ->add('resumo', 'textarea', array( 'label' => 'Resumo', 'required' => false, 'attr' => array('class' => 'form-control', 'placeholder' => 'Resumo')))
 	        ->add('publishAt', 'date', array( 'label' => 'publishAt', 'required' => false, 'widget' => 'single_text','format' => 'dd-MM-yyyy',))
             ->add('isActive', 'checkbox', array( 'label' => 'isActive'))

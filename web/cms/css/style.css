@@ -4144,8 +4144,8 @@ tr.odd.gradeX td.sorting_1,tr.even.gradeX td.sorting_1,table.display tr.even.gra
     border-radius:50%;
     -webkit-border-radius:50%;
     border:10px solid #fff;
-    width:160px;
-    height:160px;
+    width:150px;
+    height:150px;
     background: #fff;
 }
 .lock-wrapper .locked {
@@ -5741,4 +5741,19 @@ input[type=radio], input[type=checkbox]{
 }
 .note-toolbar .btn-default{
     background-color: #2E3A4B;
+}
+.apagar {
+    float: left;
+    position: relative;
+    left: 16px;
+    color: #ff0000;
+}
+.thumb-img {
+    float: left;
+}
+.filesize {
+    float: left;
+    right: 50px;
+    position: relative;
+    display: none;
 }

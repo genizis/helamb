@@ -2,18 +2,14 @@
 
 namespace CMS\BaseBundle\Controller;
 
-use Doctrine\Entity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 abstract class BaseController extends Controller
 {
 	protected $configs = array();
-	protected $upload_fields = null;
-	protected $crop_fields = null;
+	protected $upload_fields = array();
+	protected $crop_fields = array();
 
 	protected function indexAction()
 	{
@@ -58,10 +54,16 @@ abstract class BaseController extends Controller
 			$em->persist($entity);
 			$em->flush();
 
-			$this->get('session')->getFlashBag()->add('title', $this->configs['singular_name']);
-			$this->get('session')->getFlashBag()->add('message', 'Novo registro adicionado com sucesso');
+            $flash = $this->get('braincrafted_bootstrap.flash');
+            $flash->success($this->configs['singular_name'] . ' adicionado com sucesso');
 
-			return $this->redirect($this->generateUrl($this->configs['prefix_route'] . '_show', array('id' => $entity->getId())));
+            if(isset($_POST[$form->getName()]['actions']['submit_add_new'])){
+                return $this->redirect($this->generateUrl($this->configs['prefix_route'] . '_new'));
+            }
+            else {
+                return $this->redirect($this->generateUrl($this->configs['prefix_route'] . '_show', array('id' => $entity->getId())));
+            }
+
 		}
 
 		return array(
@@ -169,10 +171,18 @@ abstract class BaseController extends Controller
 
 			$em->flush();
 
-			$this->get('session')->getFlashBag()->add('title', $this->configs['singular_name']);
-			$this->get('session')->getFlashBag()->add('message', 'Registro editado com sucesso');
+            $title = ucwords($this->configs['title_field']);
+            $title = 'get' . $title;
 
-			return $this->redirect($this->generateUrl($this->configs['prefix_route'] . '_edit', array('id' => $id)));
+            $flash = $this->get('braincrafted_bootstrap.flash');
+			$flash->success($this->configs['singular_name'] . ' "' . $entity->$title() . '" alterado com sucesso');
+
+            if(isset($_POST[$editForm->getName()]['actions']['submit_go_back'])){
+                return $this->redirect($this->generateUrl($this->configs['prefix_route']));
+            }
+            else {
+                return $this->redirect($this->generateUrl($this->configs['prefix_route'] . '_edit', array('id' => $id)));
+            }
 		}
 
 		return array(
@@ -208,8 +218,11 @@ abstract class BaseController extends Controller
 		$em->remove($entity);
 		$em->flush();
 
-		$this->get('session')->getFlashBag()->add('title', $this->configs['singular_name']);
-		$this->get('session')->getFlashBag()->add('message', 'Registro removido com sucesso');
+        $title = ucwords($this->configs['title_field']);
+        $title = 'get' . $title;
+
+        $flash = $this->get('braincrafted_bootstrap.flash');
+        $flash->success($this->configs['singular_name'] . ' "' . $entity->$title() . '" removido com sucesso');
 
 		return $this->redirect($this->generateUrl($this->configs['prefix_route']));
 	}
@@ -241,8 +254,8 @@ abstract class BaseController extends Controller
 
 		}
 
-		$this->get('session')->getFlashBag()->add('title', $this->configs['singular_name']);
-		$this->get('session')->getFlashBag()->add('message', 'Todos os registros foram removido com sucesso');
+        $flash = $this->get('braincrafted_bootstrap.flash');
+        $flash->success($this->configs['plural_name'] . ' removidos com sucesso');
 
 		return $this->redirect($this->generateUrl($this->configs['prefix_route']));
 	}
@@ -263,7 +276,9 @@ abstract class BaseController extends Controller
 			'method' => 'POST',
 		));
 
-		$form->add('submit', 'submit', array('label' => 'Salvar', 'attr' => array('class' => 'btn btn-success')));
+        $form->add('actions', 'form_actions');
+        $form->get('actions')->add('submit', 'submit', array('label' => 'Salvar', 'attr' => array('class' => 'btn btn-success')));
+        $form->get('actions')->add('submit_add_new', 'submit', array('label' => 'Salvar e adicionar novo', 'attr' => array('class' => 'btn btn-info', 'value' => '1')));
 
 		return $form;
 	}
@@ -275,7 +290,9 @@ abstract class BaseController extends Controller
 			'method' => 'PUT',
 		));
 
-		$form->add('submit', 'submit', array('label' => 'Salvar', 'attr' => array('class' => 'btn btn-success')));
+        $form->add('actions', 'form_actions');
+        $form->get('actions')->add('submit', 'submit', array('label' => 'Salvar', 'attr' => array('class' => 'btn btn-success')));
+        $form->get('actions')->add('submit_go_back', 'submit', array('label' => 'Salvar e voltar', 'attr' => array('class' => 'btn btn-info', 'value' => '1')));
 
 		return $form;
 	}

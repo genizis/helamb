@@ -11,12 +11,13 @@
         </h1>
         <section class="panel">
             <div class="panel-body">
+                {% include 'BraincraftedBootstrapBundle::flash.html.twig' %}
             <div class="adv-table">
             <form action="{{ path(configs.prefix_route ~ '_delete_all') }}" id="listform" method="post">
                 <table  class="display table table-bordered table-striped" id="dynamic-table">
                     <thead>
                         <tr>
-                            <th class="sorting_disabled" style="text-align: center;"><input type="checkbox" class="check-all"></th>
+                            <th class="sorting_disabled col-sm-1" style="text-align: center;"><input type="checkbox" class="check-all"></th>
                             <th class="col-sm-1">Id</th>
                             {% for field, value in configs.list_fields  %}
                                 {% if value.type is defined %}
